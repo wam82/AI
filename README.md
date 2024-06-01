@@ -12,7 +12,11 @@ Mario El Shaer 40210124
 
 ## Content of files and their purpose:
 1. **Images folder**: it is divided into two folders one for training and one for testing. The two folders contain datasets/classes (happy, focused, anger, neutral) those labelled filtered datasets were used for the analysis.
-2.  **Python script(dataset_visualization.py)**: The Python script is to generate bar charts and pixel intensity charts for the datasets collected
+   the dataset is from:
+   
+(N. Segal, “Facial Expression Training Data”, Kaggle, 2023. [Online]. Available: https://www.kaggle.com/datasets/noamsegal/affectnet-training-data/data)
+
+3.  **Python script(dataset_visualization.py)**: The Python script is to generate bar charts and pixel intensity charts for the datasets collected
 
 ## To run the dataset_visualization.py (data cleaning&data visuialoztion)
 1. install the repository
