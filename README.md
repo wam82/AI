@@ -4,9 +4,9 @@ Group OB_19
 
 The team members are:
 
-1. Tarek Elalfi 40197527
-2. Mario El Shaer 40210124
-3. William-Alexandre Messier 40208650
+William-Alexandre Messier 40208650
+Tarek Elalfi 40197527
+Mario El Shaer 40210124
 
 ## Content of files and their purpose:
 1. **Images folder**: it is divided into two folders one for training and one for testing. The two folders contain datasets/classes (happy, focused, anger, neutral) those labelled filtered datasets were used for the analysis.
