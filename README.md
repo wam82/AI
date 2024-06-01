@@ -5,7 +5,9 @@ Group OB_19
 The team members are:
 
 William-Alexandre Messier 40208650
+
 Tarek Elalfi 40197527
+
 Mario El Shaer 40210124
 
 ## Content of files and their purpose:
