@@ -14,8 +14,14 @@ classes = ['anger', 'focused', 'happy', 'neutral']
 # Function to load images and labels
 def load_dataset(base_path, classes, image_size=(96, 96)):
     images = []
+    # Label logic is as follows:
+    # Anger = 0
+    # Focused = 1
+    # Happy = 2
+    # Neutral = 3
     labels = []
     for label, class_name in enumerate(classes):
+        print(f'Loading {class_name} with label {label}')
         class_path = os.path.join(base_path, class_name)
         print(f"Loading images from: {class_path}")  # Debug print
         if not os.path.exists(class_path):
