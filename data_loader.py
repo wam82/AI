@@ -4,10 +4,19 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 
 def load_data():
-    # Data transformations
-    transform = transforms.Compose([
+    # Data transformations with augmentation
+    transform_train = transforms.Compose([
         transforms.Resize((128, 128)),
-        transforms.ToTensor()
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomRotation(10),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+
+    transform_test = transforms.Compose([
+        transforms.Resize((128, 128)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
     # Define the paths
@@ -16,8 +25,8 @@ def load_data():
     test_dir = os.path.join(base_dir, "Testing")
 
     # Load datasets
-    train_dataset = datasets.ImageFolder(root=train_dir, transform=transform)
-    test_dataset = datasets.ImageFolder(root=test_dir, transform=transform)
+    train_dataset = datasets.ImageFolder(root=train_dir, transform=transform_train)
+    test_dataset = datasets.ImageFolder(root=test_dir, transform=transform_test)
 
     # Split train dataset into training and validation
     train_size = int(0.85 * len(train_dataset))

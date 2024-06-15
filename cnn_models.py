@@ -12,11 +12,14 @@ class CNN(nn.Module):
         self.fc2 = nn.Linear(512, 4)  # Assuming 4 classes: anger, focused, happy, neutral
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.5)
+        self.batchnorm1 = nn.BatchNorm2d(32)
+        self.batchnorm2 = nn.BatchNorm2d(64)
+        self.batchnorm3 = nn.BatchNorm2d(128)
 
     def forward(self, x):
-        x = self.pool(self.relu(self.conv1(x)))
-        x = self.pool(self.relu(self.conv2(x)))
-        x = self.pool(self.relu(self.conv3(x)))
+        x = self.pool(self.relu(self.batchnorm1(self.conv1(x))))
+        x = self.pool(self.relu(self.batchnorm2(self.conv2(x))))
+        x = self.pool(self.relu(self.batchnorm3(self.conv3(x))))
         x = x.view(-1, 128 * 16 * 16)
         x = self.dropout(self.relu(self.fc1(x)))
         x = self.fc2(x)
@@ -35,12 +38,16 @@ class CNNVariant1(nn.Module):
         self.fc2 = nn.Linear(512, 4)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.5)
+        self.batchnorm1 = nn.BatchNorm2d(32)
+        self.batchnorm2 = nn.BatchNorm2d(64)
+        self.batchnorm3 = nn.BatchNorm2d(128)
+        self.batchnorm4 = nn.BatchNorm2d(256)
 
     def forward(self, x):
-        x = self.pool(self.relu(self.conv1(x)))
-        x = self.pool(self.relu(self.conv2(x)))
-        x = self.pool(self.relu(self.conv3(x)))
-        x = self.pool(self.relu(self.conv4(x)))  # Added layer
+        x = self.pool(self.relu(self.batchnorm1(self.conv1(x))))
+        x = self.pool(self.relu(self.batchnorm2(self.conv2(x))))
+        x = self.pool(self.relu(self.batchnorm3(self.conv3(x))))
+        x = self.pool(self.relu(self.batchnorm4(self.conv4(x))))  # Added layer
         x = x.view(-1, 256 * 8 * 8)
         x = self.dropout(self.relu(self.fc1(x)))
         x = self.fc2(x)
@@ -58,11 +65,14 @@ class CNNVariant2(nn.Module):
         self.fc2 = nn.Linear(512, 4)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.5)
+        self.batchnorm1 = nn.BatchNorm2d(32)
+        self.batchnorm2 = nn.BatchNorm2d(64)
+        self.batchnorm3 = nn.BatchNorm2d(128)
 
     def forward(self, x):
-        x = self.pool(self.relu(self.conv1(x)))
-        x = self.pool(self.relu(self.conv2(x)))
-        x = self.pool(self.relu(self.conv3(x)))
+        x = self.pool(self.relu(self.batchnorm1(self.conv1(x))))
+        x = self.pool(self.relu(self.batchnorm2(self.conv2(x))))
+        x = self.pool(self.relu(self.batchnorm3(self.conv3(x))))
         x = x.view(-1, 128 * 16 * 16)
         x = self.dropout(self.relu(self.fc1(x)))
         x = self.fc2(x)
