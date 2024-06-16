@@ -30,30 +30,14 @@ def evaluate_model(model, test_loader, criterion, device):
     print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}')
     return test_loss, test_accuracy, all_preds, all_labels
 
-def plot_confusion_matrix(y_true, y_pred, classes, title='Confusion Matrix'):
-    cm = confusion_matrix(y_true, y_pred)
-    plt.figure(figsize=(10, 8))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=classes, yticklabels=classes)
+def plot_detailed_binary_confusion_matrix(y_true, y_pred, class_index, class_name, title='Binary Confusion Matrix'):
+    y_true_binary = np.array(y_true) == class_index
+    y_pred_binary = np.array(y_pred) == class_index
+    
+    cm = confusion_matrix(y_true_binary, y_pred_binary)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['Positive', 'Negative'], yticklabels=['Positive', 'Negative'], cbar=False, linewidths=0.5, linecolor='black')
     plt.xlabel('Predicted')
     plt.ylabel('True')
-    plt.title(title)
+    plt.title(f'{title} for {class_name}')
     plt.show()
-
-def calculate_metrics(y_true, y_pred, average='macro'):
-    precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, average=average)
-    accuracy = accuracy_score(y_true, y_pred)
-    return accuracy, precision, recall, f1
-
-def summarize_metrics(models, test_loader, criterion, device, class_names):
-    results = []
-    for name, model in models.items():
-        _, _, y_pred, y_true = evaluate_model(model, test_loader, criterion, device)
-        macro_metrics = calculate_metrics(y_true, y_pred, average='macro')
-        micro_metrics = calculate_metrics(y_true, y_pred, average='micro')
-        results.append({
-            'Model': name,
-            'Macro Accuracy': macro_metrics[0], 'Macro Precision': macro_metrics[1], 'Macro Recall': macro_metrics[2], 'Macro F1': macro_metrics[3],
-            'Micro Accuracy': micro_metrics[0], 'Micro Precision': micro_metrics[1], 'Micro Recall': micro_metrics[2], 'Micro F1': micro_metrics[3],
-        })
-        plot_confusion_matrix(y_true, y_pred, class_names, title=f'Confusion Matrix - {name}')
-    return results
