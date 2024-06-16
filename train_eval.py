@@ -1,6 +1,5 @@
 import torch
 import torch.optim as optim
-from torch.utils.data import DataLoader, random_split
 from cnn_models import CNN, CNNVariant1, CNNVariant2
 from data_loader import load_data
 from utils import save_model, evaluate_model
@@ -35,7 +34,7 @@ def validate(model, val_loader, criterion, device):
     val_accuracy = correct.double() / len(val_loader.dataset)
     return val_loss, val_accuracy
 
-def train_and_evaluate(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=25, patience=5):
+def train_and_evaluate(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=25, patience=10):
     best_loss = float('inf')
     best_model_wts = model.state_dict()
     epochs_no_improve = 0
@@ -65,38 +64,34 @@ def main():
     # Load data
     train_loader, val_loader, test_loader = load_data()
 
-    # Initialize the model, criterion, and optimizer
-    model = CNN().to(device)
+    # Initialize the models, criterion, and optimizer
+    models = {
+        'Main Model': CNN().to(device),
+        'Variant 1': CNNVariant1().to(device),
+        'Variant 2': CNNVariant2().to(device)
+    }
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.001)
+    optimizer = optim.Adam(models['Main Model'].parameters(), lr=0.001)
 
     # Train and evaluate the main model
     print("Training Main Model...")
-    model = train_and_evaluate(model, train_loader, val_loader, criterion, optimizer, device, num_epochs=25, patience=5)
-    save_model(model, "best_main_model.pth")
+    models['Main Model'] = train_and_evaluate(models['Main Model'], train_loader, val_loader, criterion, optimizer, device, num_epochs=2, patience=10)
+    save_model(models['Main Model'], "best_main_model.pth")
 
-    print("Evaluating Main Model...")
-    evaluate_model(model, test_loader, criterion, device)
-
-    # Train and evaluate variant 1
     print("Training Variant 1...")
-    model_variant1 = CNNVariant1().to(device)
-    optimizer = optim.Adam(model_variant1.parameters(), lr=0.001)
-    model_variant1 = train_and_evaluate(model_variant1, train_loader, val_loader, criterion, optimizer, device, num_epochs=25, patience=5)
-    save_model(model_variant1, "best_variant1_model.pth")
+    optimizer = optim.Adam(models['Variant 1'].parameters(), lr=0.001)
+    models['Variant 1'] = train_and_evaluate(models['Variant 1'], train_loader, val_loader, criterion, optimizer, device, num_epochs=2, patience=10)
+    save_model(models['Variant 1'], "best_variant1_model.pth")
 
-    print("Evaluating Variant 1...")
-    evaluate_model(model_variant1, test_loader, criterion, device)
-
-    # Train and evaluate variant 2
     print("Training Variant 2...")
-    model_variant2 = CNNVariant2().to(device)
-    optimizer = optim.Adam(model_variant2.parameters(), lr=0.001)
-    model_variant2 = train_and_evaluate(model_variant2, train_loader, val_loader, criterion, optimizer, device, num_epochs=25, patience=5)
-    save_model(model_variant2, "best_variant2_model.pth")
+    optimizer = optim.Adam(models['Variant 2'].parameters(), lr=0.001)
+    models['Variant 2'] = train_and_evaluate(models['Variant 2'], train_loader, val_loader, criterion, optimizer, device, num_epochs=2, patience=10)
+    save_model(models['Variant 2'], "best_variant2_model.pth")
 
-    print("Evaluating Variant 2...")
-    evaluate_model(model_variant2, test_loader, criterion, device)
+    # Evaluate the models on the test set
+    for name, model in models.items():
+        print(f'Evaluating {name} on the test set...')
+        evaluate_model(model, test_loader, criterion, device)
 
 if __name__ == "__main__":
     main()
