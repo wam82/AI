@@ -21,7 +21,15 @@ Mario El Shaer 40210124
 
 ## To run the dataset_visualization.py (data cleaning&data visuialoztion)
 1. install the repository
-2. open the project on a python envirnoment
+2. open the project on a python environment
 3. ensure that the dataset_visualization.py is opened in the complier you are in
 4. install all the necessary libraries (numpy, matplotlib, etc...) *you can hover over the errors for the libraries importations on top and click on the action it will download the libraries*
-5. the code will run, analyze the images and generate the charts.
+5. the code will run, analyze the images and generate the charts.  
+
+## To run the train_eval.py (model training and evaluation)
+1. install the repository
+2. move the newly created folder to your desktop
+3. open the project on a python environment
+4. ensure that the train_eval.py is opened in the compiler
+5. intall all the necessary libraries *you can hover over the errors for the libraries importantions on top and click on the action it will download the librairies*
+6. the code will run, train an ai model and generate a confusion matrix
