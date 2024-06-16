@@ -21,7 +21,7 @@ def load_data():
     ])
 
     # Define the paths
-    base_dir = os.path.join(os.path.expanduser("~"), "Desktop", "COMP472", "AI", "Images")
+    base_dir = os.path.join(os.path.expanduser("~"), "Desktop", "AI", "Images")
     train_dir = os.path.join(base_dir, "Training")
     test_dir = os.path.join(base_dir, "Testing")
 

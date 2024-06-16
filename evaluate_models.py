@@ -1,7 +1,7 @@
 import torch
 from cnn_models import CNN, CNNVariant1, CNNVariant2
 from data_loader import load_data
-from utils import load_model, evaluate_model, plot_detailed_binary_confusion_matrix
+from utils import load_model, evaluate_model, plot_confusion_matrix
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -27,8 +27,7 @@ def main():
         print(f'Evaluating {name} on the test set...')
         test_loss, test_accuracy, all_preds, all_labels = evaluate_model(model, test_loader, torch.nn.CrossEntropyLoss(), device)
         print(f'{name} - Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}')
-        for idx, class_name in enumerate(class_names):
-            plot_detailed_binary_confusion_matrix(all_labels, all_preds, idx, class_name, title=f'Binary Confusion Matrix - {name}')
+        plot_confusion_matrix(all_labels, all_preds, class_names, title=f'Confusion Matrix - {name}')
 
 if __name__ == "__main__":
     main()

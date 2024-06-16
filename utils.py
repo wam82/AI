@@ -1,8 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, accuracy_score
-import seaborn as sns
+from sklearn.metrics import confusion_matrix, accuracy_score
 
 def save_model(model, path):
     torch.save(model.state_dict(), path)
@@ -30,14 +29,21 @@ def evaluate_model(model, test_loader, criterion, device):
     print(f'Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}')
     return test_loss, test_accuracy, all_preds, all_labels
 
-def plot_detailed_binary_confusion_matrix(y_true, y_pred, class_index, class_name, title='Binary Confusion Matrix'):
-    y_true_binary = np.array(y_true) == class_index
-    y_pred_binary = np.array(y_pred) == class_index
-    
-    cm = confusion_matrix(y_true_binary, y_pred_binary)
-    plt.figure(figsize=(8, 6))
-    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['Positive', 'Negative'], yticklabels=['Positive', 'Negative'], cbar=False, linewidths=0.5, linecolor='black')
-    plt.xlabel('Predicted')
-    plt.ylabel('True')
-    plt.title(f'{title} for {class_name}')
+def plot_confusion_matrix(y_true, y_pred, class_names, title):
+    cm = confusion_matrix(y_true, y_pred)
+    fig, ax = plt.subplots(figsize=(10, 10))
+    ax.matshow(np.zeros_like(cm), cmap='Greys')
+
+    for i in range(len(class_names)):
+        for j in range(len(class_names)):
+            ax.text(j, i, str(cm[i, j]), va='center', ha='center')
+
+    ax.set_xticks(np.arange(len(class_names)))
+    ax.set_yticks(np.arange(len(class_names)))
+    ax.set_xticklabels([f'Predicted {name}' for name in class_names], rotation=45, ha='left')
+    ax.set_yticklabels([f'Actual {name}' for name in class_names])
+
+    ax.set_xlabel('Predicted')
+    ax.set_ylabel('Actual')
+    ax.set_title(title)
     plt.show()
