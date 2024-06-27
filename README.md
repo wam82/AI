@@ -32,4 +32,5 @@ Mario El Shaer 40210124
 3. open the project on a python environment
 4. ensure that the train_eval.py is opened in the compiler
 5. intall all the necessary libraries *you can hover over the errors for the libraries importantions on top and click on the action it will download the librairies*
-6. the code will run, train an ai model and generate a confusion matrix
+6. the code will run, train an ai model
+7. once train_eval is ran, run evaluate_models.py. it will create a confusion matrix for each model
